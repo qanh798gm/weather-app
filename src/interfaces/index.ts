@@ -35,6 +35,14 @@ export interface WeatherDetail {
   dt_txt: string;
 }
 
+export interface City {
+  country: string;
+  lat: number;
+  lon: number;
+  name: string;
+  state: string;
+}
+
 export interface Response {
   cod: string;
   message: number;

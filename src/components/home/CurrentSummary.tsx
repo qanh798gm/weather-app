@@ -1,14 +1,17 @@
 import { Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
-import { SingleProps } from "../interfaces";
-import { getImage } from "../http";
-import { customFormat, SUMMARY_FORMAT } from "../utils/DateHelper";
+import { SingleProps } from "../../interfaces";
+import { getImage } from "../../http";
+import { startCase } from "lodash-es";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 export default function CurrentSummary({ data }: Readonly<SingleProps>) {
   return (
     <Card sx={{ minWidth: 150, marginTop: 1 }}>
       <CardContent>
         <Typography variant='h5'>
-          {customFormat(data?.dt, SUMMARY_FORMAT)}
+          {dayjs(data?.dt_txt.split(" ")[0], "YYYY-MM-DD").format("DD MMMM")}
         </Typography>
         <Grid container spacing={2}>
           <Grid size={6}>
@@ -23,7 +26,7 @@ export default function CurrentSummary({ data }: Readonly<SingleProps>) {
               {data?.main?.temp} ° C
             </Typography>
             <Typography variant='h6' gutterBottom>
-              {data?.weather[0]?.description}
+              {startCase(data?.weather[0]?.description)}
             </Typography>
           </Grid>
         </Grid>

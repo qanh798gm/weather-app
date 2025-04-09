@@ -1,8 +1,11 @@
 import { Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
-import { ListProps, SingleProps, WeatherDetail } from "../interfaces";
+import { ListProps, SingleProps, WeatherDetail } from "../../interfaces";
 import { useMemo } from "react";
-import { getImage } from "../http";
-import { customFormat, SHORT_TIME } from "../utils/DateHelper";
+import { getImage } from "../../http";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { startCase } from "lodash-es";
+dayjs.extend(customParseFormat);
 
 const group = (data: WeatherDetail[]) => {
   return data.reduce((acc: WeatherDetail[][], curr: WeatherDetail) => {
@@ -38,11 +41,13 @@ export default function ForecastGroup({ data }: Readonly<ListProps>) {
 }
 
 function ForecastList({ data }: Readonly<ListProps>) {
-  console.log(data);
+  const formatDate = (date: string) => {
+    return dayjs(date.split(" ")[0], "YYYY-MM-DD").format("DD MMMM");
+  };
   return (
     <>
       <Typography variant='h6' gutterBottom>
-        {data[0]?.dt_txt?.split(" ")[0]}
+        {formatDate(data[0].dt_txt)}
       </Typography>
       {data?.map((item) => (
         <ForecastItem key={item.dt} data={item} />
@@ -56,7 +61,7 @@ function ForecastItem({ data }: Readonly<SingleProps>) {
     <Grid container spacing={2}>
       <Grid size={3}>
         <Typography variant='subtitle2' gutterBottom>
-          {customFormat(data?.dt, SHORT_TIME)}
+          {data?.dt_txt.split(" ")[1].slice(0, 5)}
         </Typography>
       </Grid>
       <Grid
@@ -74,7 +79,7 @@ function ForecastItem({ data }: Readonly<SingleProps>) {
       </Grid>
       <Grid size={4} display='flex' justifyContent='right'>
         <Typography variant='subtitle2' gutterBottom>
-          {data?.weather[0]?.description}
+          {startCase(data?.weather[0]?.description)}
         </Typography>
       </Grid>
     </Grid>

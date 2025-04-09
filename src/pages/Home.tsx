@@ -1,25 +1,43 @@
 import { useEffect, useState } from "react";
-import { getData } from "../http";
-import { Box, Container } from "@mui/material";
-import CurrentSummary from "../components/CurrentSummary";
+import { getWeatherList } from "../http";
+import { Box, Container, Typography } from "@mui/material";
+import CurrentSummary from "../components/home/CurrentSummary";
+import ForecastGroup from "../components/home/ForecastGroup";
 import { WeatherDetail } from "../interfaces";
-import ForecastGroup from "../components/ForecastGroup";
 
 export default function Home() {
   const [data, setData] = useState<WeatherDetail[]>([]);
+  const [error, setError] = useState("");
   const fetchData = async () => {
-    const res = await getData();
-    setData(res.list);
+    const recentCity = JSON.parse(localStorage.getItem("city") ?? "null");
+    console.log(recentCity);
+    if (recentCity) {
+      const res = await getWeatherList(recentCity.lat, recentCity.lon);
+      setData(res.list);
+    } else {
+      setError("Please switch to Search & History tab to search for a city.");
+    }
   };
   useEffect(() => {
     fetchData();
   }, []);
 
+  const newList = data.slice(1);
+
   return (
     <Container maxWidth='sm'>
       <Box>
-        <CurrentSummary data={data[0]} />
-        <ForecastGroup data={data} />
+        {error && (
+          <Typography variant='h6' sx={{ marginTop: 1 }} color='error'>
+            {error}
+          </Typography>
+        )}
+        {!error && (
+          <>
+            <CurrentSummary data={data?.[0]} />
+            <ForecastGroup data={newList} />
+          </>
+        )}
       </Box>
     </Container>
   );
