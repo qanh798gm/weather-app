@@ -42,18 +42,3 @@ export interface City {
   name: string;
   state: string;
 }
-
-export interface Response {
-  cod: string;
-  message: number;
-  cnt: number;
-  list: WeatherDetail[];
-}
-
-export interface SingleProps {
-  data: WeatherDetail;
-}
-
-export interface ListProps {
-  data: WeatherDetail[];
-}

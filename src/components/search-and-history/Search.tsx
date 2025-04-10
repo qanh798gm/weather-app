@@ -1,7 +1,11 @@
 import { Button, Card, Grid, TextField, Typography } from "@mui/material";
-import { useState } from "react";
-import { getCities } from "../../http";
+import { ChangeEvent, useState } from "react";
+import { getCityList } from "../../http";
 import { City } from "../../interfaces";
+
+interface Props {
+  onChange: (item: City) => void;
+}
 
 interface Option {
   metadata: City;
@@ -9,7 +13,7 @@ interface Option {
   id: string;
 }
 
-export const Search = ({ onChange }) => {
+export const Search = ({ onChange }: Readonly<Props>) => {
   const [value, setValue] = useState("");
   const [options, setOptions] = useState<Option[]>([]);
   const [error, setError] = useState("");
@@ -17,7 +21,7 @@ export const Search = ({ onChange }) => {
   const onSearch = async () => {
     try {
       setError("");
-      const res = await getCities(value);
+      const res = await getCityList(value);
       const data = res.map((item: City) => ({
         metadata: { ...item },
         label: `${item.state || item.name}, ${item.country}`,
@@ -33,7 +37,7 @@ export const Search = ({ onChange }) => {
     }
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setError("");
     setValue(event.target.value);
   };

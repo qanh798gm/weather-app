@@ -1,6 +1,6 @@
 import { Routes, Route, useNavigate } from "react-router";
 
-import { AppBar, Box, Button, Toolbar } from "@mui/material";
+import { AppBar, Box, Button, Grid, Toolbar } from "@mui/material";
 
 import Home from "./pages/Home";
 import SearchAndHistory from "./pages/SearchAndHistory";
@@ -10,24 +10,36 @@ function App() {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position='static'>
+        <AppBar
+          position='static'
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Toolbar>
-            <Button
-              color='inherit'
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              Home
-            </Button>
-            <Button
-              color='inherit'
-              onClick={() => {
-                navigate("/history");
-              }}
-            >
-              Search & History
-            </Button>
+            <Grid display={"flex"} justifyContent='center' width='100%'>
+              <Button
+                sx={{
+                  backgroundColor: "white",
+                  color: "primary",
+                  marginRight: 2,
+                }}
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Home
+              </Button>
+              <Button
+                sx={{ backgroundColor: "white", color: "primary" }}
+                onClick={() => {
+                  navigate("/history");
+                }}
+              >
+                Search & History
+              </Button>
+            </Grid>
           </Toolbar>
         </AppBar>
       </Box>

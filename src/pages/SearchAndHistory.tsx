@@ -25,11 +25,11 @@ export default function SearchAndHistory() {
     navigate("/");
   };
 
-  const onDelete = (city) => {
+  const onDelete = (city: City) => {
     const history = JSON.parse(localStorage.getItem("history") ?? "null");
     if (history) {
       const newHistory = history.filter(
-        (item) => item.name !== city.name && item.country !== city.country
+        (item: City) => item.name !== city.name && item.country !== city.country
       );
       localStorage.setItem("history", JSON.stringify(newHistory));
       setList(newHistory);

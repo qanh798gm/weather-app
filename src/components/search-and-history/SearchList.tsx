@@ -1,11 +1,18 @@
 import { Card, CardContent, Grid, IconButton, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { City } from "../../interfaces";
 
-export const SearchList = ({ data, onSearch, onDelete }) => {
+interface Props {
+  data: City[];
+  onSearch: (item: City) => void;
+  onDelete: (item: City) => void;
+}
+
+export const SearchList = ({ data, onSearch, onDelete }: Readonly<Props>) => {
   return (
     <>
-      <Typography variant='h6' gutterBottom>
+      <Typography variant='h6' sx={{ marginTop: 2 }}>
         Search History
       </Typography>
       <Card sx={{ minWidth: 150, marginTop: 1 }}>
@@ -17,7 +24,7 @@ export const SearchList = ({ data, onSearch, onDelete }) => {
               spacing={2}
               justifyContent={"space-between"}
             >
-              <Grid size={8}>
+              <Grid size={8} display='flex' alignItems='center'>
                 <Typography variant='h5'>
                   {item.name}, {item.country}
                 </Typography>
@@ -33,6 +40,14 @@ export const SearchList = ({ data, onSearch, onDelete }) => {
               </Grid>
             </Grid>
           ))}
+          {data?.length === 0 && (
+            <Typography
+              variant='h6'
+              sx={{ textAlign: "center", verticalAlign: "middle" }}
+            >
+              No search history found.
+            </Typography>
+          )}
         </CardContent>
       </Card>
     </>
